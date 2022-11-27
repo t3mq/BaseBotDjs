@@ -8,7 +8,7 @@ execute: async (client) => {
     
     console.log('[API] '.bold.green + `Connected to Discord.`.bold.white)
 
-    let statuses = ['📂 | Logs Manager', `${client.guilds.cache.size} guilds`]
+    let statuses = ['📂 | Zutvo', `${client.guilds.cache.size} guilds`]
     setInterval(function() {
         let status = statuses[Math.floor(Math.random()*statuses.length)];
             client.user.setPresence({
