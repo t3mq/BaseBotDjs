@@ -8,12 +8,6 @@ execute: async (client) => {
     
     console.log('[API] '.bold.green + `Connected to Discord.`.bold.white)
 
-    client.guilds.cache.forEach(guild => {
-        client.db.create({
-            _id: guild.id
-        }).catch(() => {})
-    });
-
     let statuses = ['📂 | Logs Manager', `${client.guilds.cache.size} guilds`]
     setInterval(function() {
         let status = statuses[Math.floor(Math.random()*statuses.length)];
