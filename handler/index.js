@@ -4,20 +4,28 @@ const { readdirSync } = require('fs');
 const colors = require('colors');
 
 module.exports = (client) => {
-    // # commands
-    const loadCommands = (dir = "./commands/") => {
-        readdirSync(dir).forEach(dirs => {
-          const commands = readdirSync(`${dir}/${dirs}/`).filter(files => files.endsWith(".js"));
+    // # slashCommands
+    const arrayOfSlashCommands = [];
 
-          for (const files of commands) {
-            const getFileName = require(`../${dir}/${dirs}/${files}`);
-            client.commands.set(getFileName.name, getFileName);
-            console.log(`[COMMANDS]`.bold.red + ` Loading command :`.bold.white + ` ${getFileName.name}`.bold.red);
-            if(!commands) return console.log(`[COMMANDS]`.bold.red + `Nothing command in : `.bold.yellow + `${files}`.bold.red)
-          };
-        });
-    };
-    loadCommands()
+    const loadSlashCommands = (dir = "./commands/") => {
+        readdirSync(dir).forEach(dirs => {
+            const commands = readdirSync(`${dir}/${dirs}/`).filter(files => files.endsWith(".js"));
+
+            for (const files of commands) {
+                const getFileName = require(`../${dir}/${dirs}/${files}`);
+                client.slashCommands.set(getFileName.name, getFileName);
+                console.log(`[SLASH COMMANDS]`.bold.red + ` Loading command :`.bold.white + ` ${getFileName.name}`.bold.red);
+                arrayOfSlashCommands.push(getFileName);
+            }
+        })
+
+        setTimeout(async () => {
+            console.log(`API >`.bold.white + ` Synchronize all commands with Discord API.`.bold.green)
+            await client.application.commands.set(arrayOfSlashCommands);
+            }, 5000)
+    }
+    loadSlashCommands();
+
     console.log(`•----------•`.bold.black)
 
     // # events
